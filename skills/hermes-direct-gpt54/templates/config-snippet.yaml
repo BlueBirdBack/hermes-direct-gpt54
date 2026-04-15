@@ -1,0 +1,10 @@
+display:
+  show_reasoning: false
+  # Optional if your current display personality is fluff-heavy
+  # and not identity-critical:
+  # personality: concise
+
+# Uncomment only if you want no manual approval prompts:
+# approvals:
+#   mode: off
+#   timeout: 60
