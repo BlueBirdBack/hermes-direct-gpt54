@@ -54,10 +54,12 @@ with zipfile.ZipFile(out_path, "w", compression=zipfile.ZIP_DEFLATED, compressle
     for arcname, full_path in entries:
         st = os.stat(full_path)
         mode = stat.S_IMODE(st.st_mode)
+        normalized_mode = 0o755 if (mode & 0o111) else 0o644
         info = zipfile.ZipInfo(arcname)
         info.date_time = (2020, 1, 1, 0, 0, 0)
         info.create_system = 3
-        info.external_attr = (stat.S_IFREG | mode) << 16
+        # Normalize permissions while preserving executability.
+        info.external_attr = (stat.S_IFREG | normalized_mode) << 16
         info.compress_type = zipfile.ZIP_DEFLATED
         with open(full_path, "rb") as fh:
             data = fh.read()
